@@ -163,7 +163,6 @@ class Base implements TemplateInterface{
         $html .= "<li><a href='/Temas'>Temas</a></li>";
 
         $html .= "<li><a href='/Panel'>Panel del bibliotecario</a></li>";
-        $html .= "</menu>";
           
         // parte derecha (solamente para usuarios concretos)
  
