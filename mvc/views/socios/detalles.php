@@ -4,19 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Detalles del socio</title>
-    <link rel="stylesheet" href="../style.css">
+    <?= $template->css() ?>
 </head>
 
 <body>
-    <h1>Portada de la biblioteca</h1>
-    <menu class="menu">
-            <li><a href="index.php">Inicio</a></li>
-            <li><a href="index.php?controlador=libro/list">Lista de libros</a></li>
-            <li><a href="index.php?controlador=libro/create">Nuevo libro</a></li>
-            <li><a href="index.php?controlador=socio/list">Lista de socios</a></li>
-            <li><a href="index.php?controlador=socio/create">Nuevo socio</a></li>
-        </menu>
-    <h2>Detalles del socio</h2>
+    <?= $template->login() ?>
+    <?= $template->header('Lista de libros') ?>
+    <?= $template->menu() ?>
+    <?= $template->breadCrumbs([
+        'Libros' => null
+    ]) ?>
+    <?= $template->messages() ?>
+    <main>
+        <h1><?= APP_NAME ?> </h1>
+        <section>
+            <h2><?= $socio->nombre." ".$socio->apellidos ?></h2>
     <h3><?= $socio->nombre?></h3>
 
     <p><b>Nombre:</b> <?= $socio->nombre?></p>

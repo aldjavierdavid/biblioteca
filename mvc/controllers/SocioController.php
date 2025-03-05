@@ -1,24 +1,18 @@
 <?php
-class LibroController extends Controller
+class SocioController extends Controller
 {
     public function index()
     {
         return $this->list();
     }
 
-    /**
-     * Listado de libros
-     * @return ViewResponse
-     */
-    public function list()
-    {
+    public function list(){
 
-        // recupera los libros junto con la información extra
-        $libros = V_libro::orderBy('titulo');
+        $socios = Socio::all();
+        $socios = Socio::orderBy('id');
 
-        // carga la vista que los muestra
-        return view('libro/lista', [
-            'libros' => $libros
+        return view('socios/lista', [
+            'socios' => $socios
         ]);
     }
 
@@ -29,14 +23,14 @@ class LibroController extends Controller
         if (!$id)
             throw new NothingToFindException('No se indicó el libro a buscar');
 
-        $libro = Libro::find($id); // busca el libro con ese ID
+        $socio = Socio::find($id); // busca el libro con ese ID
 
         // comprueba que existe ese libro 
-        $libro = Libro::findOrFail($id, "No se encontró el libro indicado.");
+        $socio = Socio::findOrFail($id, "No se encontró el libro indicado.");
 
         // carga la vista y le pasa el libro recuperado
-        return view('libro/detalles', [
-            'libro' => $libro
+        return view('socios/detalles', [
+            'socio' => $socio
         ]);
     }
 
@@ -185,10 +179,10 @@ class LibroController extends Controller
     public function delete(int $id = 0)
     {
 
-        $libro = Libro::findOrFail($id, "No existe el libro.");
+        $socio = Socio::findOrFail($id, "No existe el libro.");
 
-        return view('libro/borrar', [
-            'libro' => $libro
+        return view('socios/borrar', [
+            'socio' => $socio
         ]);
     }
 
