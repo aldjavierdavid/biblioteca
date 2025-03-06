@@ -37,7 +37,7 @@
                     <td>
                         <a href="/Socio/show/<?= $socio->id ?>">Ver datos </a>
                         <a href="/Socio/edit/<?= $socio->id ?>">Editar datos </a>
-                        <?php if (!$socio->prestamos) { ?>
+                        <?php if (!$socio->hasAny('Prestamo')) { ?>
                             <a href="/Socio/delete/<?= $socio->id ?>">Borrar socio</a>
                         <?php } ?>
                     </td>

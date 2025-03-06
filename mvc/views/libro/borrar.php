@@ -28,7 +28,7 @@
 
         <div class="centered">
             <a class="button" onclick="history.back()">Atrás</a>
-            <a class="button" href="/Libro/list">Lista de libros</a>
+            <a class="button" href="/Libro/lista">Lista de libros</a>
             <a class="button" href="/Libro/show/<?= $libro->id ?>">Detalles</a>
             <a class="button" href="/Libro/edit/<?= $libro->id ?>">Edición</a>
         </div>

@@ -40,7 +40,7 @@ class SocioController extends Controller
 
     public function create()
     {
-        return view('libro/nuevo');
+        return view('socios/nuevo');
     }
 
     public function store()
@@ -49,46 +49,45 @@ class SocioController extends Controller
         if (!request()->has('guardar'))
             throw new FormException('No se recibió el formulario');
 
-        $libro = new Libro(); // crea el nuevo Libro
+        $socio = new Socio(); // crea el nuevo Libro
 
         // toma los datos que llegan por POST
-        $libro->isbn            = request()->post('isbn');
-        $libro->titulo          = request()->post('titulo');
-        $libro->editorial       = request()->post('editorial');
-        $libro->autor           = request()->post('autor');
-        $libro->idioma          = request()->post('idioma');
-        $libro->edicion         = request()->post('edicion');
-        $libro->anyo            = request()->post('anyo');
-        $libro->edadrecomendada = request()->post('edadrecomendada');
-        $libro->paginas         = request()->post('paginas');
-        $libro->caracteristicas = request()->post('caracteristicas');
-        $libro->sinopsis        = request()->post('sinopsis');
+        $socio->nombre          = request()->post('nombre');
+        $socio->apellidos       = request()->post('apellidos');
+        $socio->dni             = request()->post('dni');
+        $socio->nacimiento      = request()->post('nacimiento');
+        $socio->poblacion       = request()->post('poblacion');
+        $socio->direccion       = request()->post('direccion');
+        $socio->email           = request()->post('email');
+        $socio->provincia       = request()->post('provincia');
+        $socio->cp              = request()->post('cp');
+        $socio->telefono        = request()->post('telefono');
 
         // Como en la configuración hemos indicado EMPTY_STRINGS_TO_NULL a true
         // los datos en blancos serán tomados como NULL.
         // En la BDD deberíamos permitir valores nulos en esos campos.
 
         // Si queremos poner valores por defecto podemos hacer:
-        // $libro->paginas = request()->post('paginas') ?? -1;
+        // $socio->paginas = request()->post('paginas') ?? -1;
 
         // intenta guardar el libro, en caso que la inserción falle vamos a 
         // evitar ir a la página de error y volver al formulario "nuevo libro"
         try {
             // guarda el libro en la base de datos
-            $libro->save();
+            $socio->save();
 
             // flashea un mensaje éxito en sesión
-            Session::success("Guardado del libro $libro->titulo correcto.");
+            Session::success("Guardado del socio $socio->nombre $socio->apellidos correcto.");
 
             // redirecciona a los detalles del nuevo libro
-            return redirect("/Libro/show/$libro->id");
+            return redirect("/Socio/show/$socio->id");
             // si falla el guardado del libro...
         } catch (SQLException $e) {
             // prepara el mensaje de error
-            $mensaje = "No se pudo guardar el libro $libro->titulo.";
+            $mensaje = "No se pudo guardar el socio $socio->nombre $socio->apellidos.";
 
             if (str_contains($e->errorMessage(), 'Duplicate entry'))
-                $mensaje .= "<br>Ya existe un libro con el ISBN $libro->isbn.";
+                $mensaje .= "<br>Ya existe un socio igual.";
 
             Session::error($mensaje);
 
@@ -97,7 +96,7 @@ class SocioController extends Controller
                 throw new SQLException($e->getMessage());
 
             // regresa al formulario de creación de libro 
-            return redirect("/Libro/create");
+            return redirect("/Socio/create");
         }
     }
 
@@ -113,11 +112,11 @@ class SocioController extends Controller
     {
 
         // busca el libro con ese ID
-        $libro = Libro::findOrFail($id, "No se encontró el libro");
+        $socio = Socio::findOrFail($id, "No se encontró el libro");
 
         // retorna una ViewResponse con la vista con el formulario de edición
-        return view('libro/actualizar', [
-            'libro' => $libro
+        return view('socios/actualizar', [
+            'socio' => $socio
         ]);
     }
 
@@ -129,43 +128,42 @@ class SocioController extends Controller
 
         $id = intval(request()->post('id')); // recuperar el id vía POST
 
-        $libro = Libro::findOrFail($id, "No se ha encontrado el libro,");
+        $socio = Socio::findOrFail($id, "No se ha encontrado el libro,");
 
         // recuperar el resto de campos
-        $libro->isbn            = request()->post('isbn');
-        $libro->titulo          = request()->post('titulo');
-        $libro->editorial       = request()->post('editorial');
-        $libro->autor           = request()->post('autor');
-        $libro->idioma          = request()->post('idioma');
-        $libro->edicion         = request()->post('edicion');
-        $libro->anyo            = request()->post('anyo');
-        $libro->edadrecomendada = request()->post('edadrecomendada');
-        $libro->paginas         = request()->post('paginas');
-        $libro->caracteristicas = request()->post('caracteristicas');
-        $libro->sinopsis        = request()->post('sinopsis');
+        $socio->nombre          = request()->post('nombre');
+        $socio->apellidos       = request()->post('apellidos');
+        $socio->dni             = request()->post('dni');
+        $socio->nacimiento      = request()->post('nacimiento');
+        $socio->poblacion       = request()->post('poblacion');
+        $socio->direccion       = request()->post('direccion');
+        $socio->email           = request()->post('email');
+        $socio->provincia       = request()->post('provincia');
+        $socio->cp              = request()->post('cp');
+        $socio->telefono        = request()->post('telefono');
 
         // intenta recuperar el libro
         try {
             // actualiza el libro en la base de datos
-            $libro->update();
+            $socio->update();
 
             // flashea un mensaje éxito en sesión
-            Session::success("Guardado del libro $libro->titulo correcto.");
+            Session::success("Guardado del socio $socio->nombre $socio->apellidos correcto.");
 
             // redirecciona a los detalles del libro actualizado
-            return redirect("/Libro/show/$libro->id");
+            return redirect("/Socio/show/$socio->id");
 
             // si falla el guardado del libro...
         } catch (SQLException $e) {
             // prepara el mensaje de error
-            Session::error("Hubo errores en la actualización del libro $libro->titulo.");
+            Session::error("Hubo errores en la actualización del socio $socio->nombre.");
 
             // si está en modo DEBUG vuelve a lanzar la excepción
             if (DEBUG)
                 throw new SQLException($e->getMessage());
 
             // regresa al formulario de creación de libro 
-            return redirect("/Libro/actualizar/$id");
+            return redirect("/Socio/actualizar/$id");
         }
     }
     /**
@@ -179,7 +177,7 @@ class SocioController extends Controller
     public function delete(int $id = 0)
     {
 
-        $socio = Socio::findOrFail($id, "No existe el libro.");
+        $socio = Socio::findOrFail($id, "No existe el socio.");
 
         return view('socios/borrar', [
             'socio' => $socio
@@ -198,26 +196,31 @@ class SocioController extends Controller
             throw new FormException('No se recibió la confirmación');
 
         $id = intval(request()->post('id')); // recupera el identificador
-        $libro = Libro::findOrFail($id); // recupera el libro
+        $socio = Socio::findOrFail($id); // recupera el libro
 
         // si el libro tiene ejemplares, no permitiremos su borrado
         // más adelante ocultaremos el botón de "borrar" en estos casos
         // para que no el usuario no llegue el formulario de confirmación
-        if ($libro->hasAny('Ejemplar'))
-            throw new Exception("No se puede borrar el libro mientras tenga ejemplares");
+        if ($socio->hasAny('Prestamo'))
+            throw new Exception("No se puede borrar el socio mientras tenga prestamos");
 
         try {
-            $libro->deleteObject();
-            Session::success("Se ha borrado el libro $libro->titulo.");
-            return redirect("/Libro/lista");
+            $socio->deleteObject();
+            Session::success("Se ha borrado el socio $socio->nombre.");
+            return redirect("/Socio/list");
         } catch (SQLException $e) {
 
-            Session::error("No se pudo borrar el libro $libro->titulo.");
+            Session::error("No se pudo borrar el socio $socio->nombre.");
 
             if (DEBUG)
                 throw new SQLException($e->getMessage());
 
-            return redirect("/Libro/delete/$id");
+            return redirect("/Socio/delete/$id");
         }
+    }
+
+    public function prestamos()
+    {
+
     }
 }

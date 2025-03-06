@@ -12,7 +12,7 @@
     <?= $template->header('Lista de libros') ?>
     <?= $template->menu() ?>
     <?= $template->breadCrumbs([
-        'Libros' => null
+        'Socios' => $socio->nombre ." ". $socio->apellidos
     ]) ?>
     <?= $template->messages() ?>
     <main>
@@ -30,20 +30,22 @@
     <p><b>Codigo postal:</b> <?= $socio->cp ?></p>
     <p><b>Telefono:</b> <?= $socio->telefono ?></p>
 
+
+    <?php if ($socio->hasAny('Prestamo')) { ?>
     <table class="bloquecentradow100">
 			<tr>
 				<th>Título</th><th>Límite</th><th>Devolución</th></tr>
 				
 			<?php foreach ($prestamos as $prestamo){?>
 				<tr>
-					<td><a href="index.php?controlador=libro/show&id=<?= $prestamo->idlibro ?>"><?=$prestamo->titulo?></a></td>
+					<td><a href="Libro/show/<?= $prestamo->idlibro ?>"><?=$prestamo->titulo?></a></td>
 					<td><?=$prestamo->limite?></td>
 					<td><?=$prestamo->devolucion?></td>					
 				</tr>
 			<?php } ?>		
 		</table>
-    
+    <?php } ?>
 
     <div class="centrado">
-        <a class="button" href="index.php?controlador=socio/list">Lista de socios</a>
+        <a class="button" href="/Socio/list">Lista de socios</a>
     </div>

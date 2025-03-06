@@ -215,7 +215,7 @@ class LibroController extends Controller
         try {
             $libro->deleteObject();
             Session::success("Se ha borrado el libro $libro->titulo.");
-            return redirect("/Libro/lista");
+            return redirect("/Libro/list");
         } catch (SQLException $e) {
 
             Session::error("No se pudo borrar el libro $libro->titulo.");
