@@ -34,19 +34,16 @@
                     <td><?= $socio->poblacion ?></td>
                     <td><?= $socio->telefono ?></td>
                     <td><?= $socio->email ?></td>
-                    <td>
-                        <a href="/Socio/show/<?= $socio->id ?>">Ver datos </a>
-                        <a href="/Socio/edit/<?= $socio->id ?>">Editar datos </a>
+                    <td class="centrado">
+                        <a href="/Socio/show/<?= $socio->id ?>" class="button">Ver datos </a>
+                        <a href="/Socio/edit/<?= $socio->id ?>" class="button">Editar datos </a>
                         <?php if (!$socio->hasAny('Prestamo')) { ?>
-                            <a href="/Socio/delete/<?= $socio->id ?>">Borrar socio</a>
+                            <a href="/Socio/delete/<?= $socio->id ?>" class="button">Borrar socio</a>
                         <?php } ?>
                     </td>
                 </tr>
             <?php } ?>
         </table>
-        <div class="centrado">
-            <a class="button" href="index.php?controlador=libro/list">Lista de libros</a>
-        </div>
 </body>
 
 </html>

@@ -34,9 +34,18 @@ class LibroController extends Controller
         // comprueba que existe ese libro 
         $libro = Libro::findOrFail($id, "No se encontró el libro indicado.");
 
+        $ejemplares = $libro->hasMany('Ejemplar');
+
+        // recupera los temas del libro
+        // $temas = $libro->getTemas(); // si tenemos getTemas() en el modelo
+
+        $temas = $libro->belongsToMany('Tema', 'temas_libros');
+
         // carga la vista y le pasa el libro recuperado
         return view('libro/detalles', [
-            'libro' => $libro
+            'libro' => $libro,
+            'ejemplares' => $ejemplares,
+            'temas' => $temas
         ]);
     }
 
@@ -120,10 +129,18 @@ class LibroController extends Controller
 
         // busca el libro con ese ID
         $libro = Libro::findOrFail($id, "No se encontró el libro");
+        $ejemplares = $libro->hasMany('Ejemplar');
+
+        $temas = $libro->belongsToMany('Tema', 'temas_libros');
+
+        $listaTemas = Tema::orderBy('tema');
 
         // retorna una ViewResponse con la vista con el formulario de edición
         return view('libro/actualizar', [
-            'libro' => $libro
+            'libro' => $libro,
+            'ejemplares' => $ejemplares,
+            'temas' => $temas,
+            'listaTemas' => $listaTemas
         ]);
     }
 

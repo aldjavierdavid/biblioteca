@@ -57,4 +57,9 @@
             <input type="submit" class="button" name="actualizar" value="Actualizar">
             <input type="reset" class="button" value="Reset">
         </div>
+        <div class="centered mt3">
+            <a class="button" onclick="history.back()">Atrás</a>
+                <a class="button" href="/Socio/list">Lista de socios</a>
+                <a class="button" href="/Socio/show/<?= $socio->id ?>">Detalles</a>
+            </div>
     </form>

@@ -44,19 +44,13 @@
             <a class="button" href="/Libro/edit/<?= $libro->id ?>">Editar</a>
             <a class="button" href="/Libro/delete/<?= $libro->id ?>">Borrar</a>
         </div>
-    </main>
-    <h2>Detalles del libro</h2>
-    <h3><?= $libro->titulo ?></h3>
-
-
-    <p><b>Edad Recomendada:</b>
-        <?= $libro->edadrecomendada ? $libro->edadrecomendada : 'TP' ?></p>
-
-    <?php foreach ($temas as $tema) { ?>
-        <p><b>Tema:</b><a href="index.php?controlador=tema/show&id=<?= $tema->id ?>"><?= $tema->tema ?></a></p>
-    <?php } ?>
-
-    <table class="bloquecentradow100">
+<section>
+    <h2>Ejemplres de <?= $libro->titulo ?></h2>
+    <?php
+    if(!$ejemplares){
+        echo "<div class='warning p2'><p>No hay ejemplares de este libro.</p></div>";
+    }else{ ?>
+    <table class="table bloquecentradow100 my1">
         <tr>
             <th>ID</th>
             <th>Estado</th>
@@ -64,14 +58,37 @@
         </tr>
 
         <?php foreach ($ejemplares as $ejemplar) { ?>
-            <tr>
+            <tr class="">
                 <td><?= $ejemplar->id ?></td>
                 <td><?= $ejemplar->estado ?></td>
                 <td><?= $ejemplar->precio ?></td>
             </tr>
+        <?php } 
+        }
+        ?>
+   </table>
+    <div class="p1 right">
+            Existen <?= sizeof($ejemplares) ?> ejemplares de este libro
+        </div>
+    </section>
+    <section id="temas">
+        <h2>Temas tratados en <?= $libro->titulo ?></h2>
+        <?php
+        if(!$temas){
+            echo "<div class='warning p2'><p>No se han indicado temas.</p></div>";
+        }else{ ?>
+            <table class="table w100">
+                <tr>
+                    <th>ID</th>
+                    <th>Tema</th>
+                </tr>
+                <?php foreach($temas as $tema){ ?>
+                    <tr>
+                        <td><?= $tema->id ?></td>
+                        <td><a href="/Tema/show/<?= $tema->id?>"><?= $tema->tema?></a></td>
+                    </tr>
+               <?php } ?>
+            </table>
         <?php } ?>
-    </table>
-
-    <div class="centrado">
-        <a class="button" href="index.php?controlador=libro/list">Lista de libros</a>
-    </div>
+    </section>
+    </main>

@@ -60,5 +60,5 @@
         </form>
 
         <div class="centrado">
-            <a class="button" href="/Libro/lista">Lista de libros</a>
+            <a class="button" href="/Socio/list">Lista de socios</a>
         </div>

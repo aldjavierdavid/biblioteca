@@ -19,39 +19,43 @@
         <h1><?= APP_NAME ?></h1>
         <h2>Edición del socio <?= $libro->titulo ?></h2>
 
-        <form method="POST" enctype="multipart/form-data" action="/Socio/update">
+        <form method="POST" action="/Libro/update">
             <!--input oculto que contiende el ID del libro a actualizar -->
             <input type="hidden" name='id' value="<?= $libro->id ?>">
-
-            <label>Nombre</label>
-            <input type="text" name="nombre" value="<?= old('nombre') ?>">
+            <!-- resto del formulario... -->
+            <label>ISBN</label>
+            <input type="text" name="isbn" value="<?= old('isbn', $libro->isbn) ?>">
             <br>
-            <label>Apellidos</label>
-            <input type="text" name="apellidos" value="<?= old('apellidos') ?>">
+            <label>Título</label>
+            <input type="text" name="titulo" value="<?= old('titulo', $libro->titulo) ?>">
             <br>
-            <label>DNI</label>
-            <input type="text" name="dni" value="<?= old('dni') ?>">
+            <label>Editorial</label>
+            <input type="text" name="editorial" value="<?= old('editorial', $libro->editorial) ?>">
             <br>
-            <label>Nacimiento</label>
-            <input type="date" name="nacimiento" value="<?= old('nacimiento') ?>" >
+            <label>Autor</label>
+            <input type="text" name="autor" value="<?= old('autor', $libro->autor) ?>">
             <br>
-            <label>Poblacion</label>
-            <input type="text" name="poblacion" value="<?= old('poblacion') ?>">
+            <label>Idioma</label>
+            <input type="text" name="idioma" value="<?= old('idioma', $libro->idioma) ?>">
             <br>
-            <label>Direccion</label>
-            <input type="text" name="direccion" value="<?= old('direccion') ?>">
+            <label>Edición</label>
+            <input type="number" min="0" name="edicion" value="<?= old('edicion', $libro->edicion)  ?>">
             <br>
-            <label>Email</label>
-            <input type="text" name="email" value="<?= old('email') ?>">
+            <label>Año</label>
+            <input type="number" min="0" name="anyo" value="<?= old('anyo', $libro->anyo) ?>">
             <br>
-            <label>Provincia</label>
-            <input type="text" name="provincia" value="<?= old('provincia') ?>">
+            <label>Edad rec.</label>
+            <input type="number" min="0" max="99" name="edadrecomendada"
+                value="<?= old('edad', $libro->edadrecomendada)  ?>">
             <br>
-            <label>Codigo postal</label>
-            <input type="text" name="cp" value="<?= old('cp') ?>">
+            <label>Páginas</label>
+            <input type="number" min="0" name="paginas" value="<?= old('paginas', $libro->paginas) ?>">
             <br>
-            <label>Telefono</label>
-            <input type="number" minLength="9" maxLength="9" name="telefono" value="<?= old('telefono') ?>">
+            <label>Características</label>
+            <input type="text" name="caracteristicas" value="<?= old('caracteristicas', $libro->caracteristicas) ?>">
+            <br>
+            <label>Sinopsis</label>
+            <textarea name="sinopsis" class="w50"><?= old('caracteristicas', $libro->caracteristicas) ?></textarea>
             <br>
             <div class="centrado mt2">
                 <input type="submit" class="button" name="actualizar" value="Actualizar">
@@ -60,10 +64,81 @@
         </form>
         <div class="centrado m1">
             <a class="button" onclick="history.back()">Atrás</a>
-            <a class="button" href="/Socio/list">Lista de socios</a>
-            <a class="button" href="/Socio/show<?=$libro->id ?>">Detalles</a>
-            <a class="button" href="/Socio/delete<?=$libro->id?>">Borrado</a>
+            <a class="button" href="/Libro/list">Lista de libros</a>
+            <a class="button" href="/Libro/show/<?= $libro->id ?>">Detalles</a>
+            <a class="button" href="/Libro/delete/<?= $libro->id ?>">Borrado</a>
+            
         </div>
+        <section>
+            <script>
+                function confirmar(id){
+                    if(confirm('Seguro que lo deseas eliminar?'))
+                    location.href = '/Ejemplar/destroy/'+id
+                }
+            </script>
+
+            <h2>Ejemplres de <?= $libro->titulo ?></h2>
+
+            <a class="button" href="/Ejemplar/create/<?= $libro->id ?>">Nuevo ejemplar</a>
+
+            <?php
+            if (!$ejemplares) {
+                echo "<div class='warning p2'><p>No hay ejemplares de este libro.</p></div>";
+            } else { ?>
+                <table class="table bloquecentradow100 my1">
+                    <tr>
+                        <th>ID</th>
+                        <th>Año</th>
+                        <th>Estado</th>
+                        <th>Precio</th>
+                        <th>Operaciones</th>
+                    </tr>
+
+                    <?php foreach ($ejemplares as $ejemplar) { ?>
+                        <tr>
+                            <td><?= $ejemplar->id ?></td>
+                            <td><?= $ejemplar->anyo ?></td>
+                            <td><?= $ejemplar->estado ?></td>
+                            <td><?= $ejemplar->precio ?></td>
+                            <td class="centered">
+                                <?php if(!$ejemplar->hasAny('Prestamo')) { ?>
+                                    <a onclick="confirmar(<?= $ejemplar->id ?>)">Borrar</a>
+                                <?php } ?>
+                            </td>
+                        </tr>
+                <?php }
+                }
+                ?>
+
+
+                </table>
+                <div class="p1 right">
+                    Existen <?= sizeof($ejemplares) ?> ejemplares de este libro
+                </div>
+        </section>
+        <section id="temas">
+        <h2>Temas tratados en <?= $libro->titulo ?></h2>
+        <?php
+        if(!$temas){
+            echo "<div class='warning p2'><p>No se han indicado temas.</p></div>";
+        }else{ ?>
+            <table class="table w100">
+                <tr>
+                    <th>ID</th>
+                    <th>Tema</th>
+                </tr>
+                <?php foreach($temas as $tema){ ?>
+                    <tr>
+                        <td><?= $tema->id ?></td>
+                        <td><a href="/Tema/show/<?= $tema->id?>"><?= $tema->tema?></a></td>
+                    </tr>
+               <?php } ?>
+            </table>
+        <?php } ?>
+        <form class="w50 m0 no-border" method="POST" action="/Libro/addtema">
+            <input type="hidden" name="idlibro" va>
+        </form>
+    </section>
     </main>
 
     <!--pulidodesuelos.net@gmail.com -->

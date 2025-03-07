@@ -43,10 +43,10 @@
                 <td><?=$libro->autor?></td>
                 <td><?=$libro->ejemplares?></td>
                 <td class="centrado">
-                    <a href="/Libro/show/<?= $libro->id ?>">Ver</a>
-                    <a href="/Libro/edit/<?= $libro->id ?>">Editar</a>
+                    <a class="button" href="/Libro/show/<?= $libro->id ?>">Ver</a>
+                    <a class="button" href="/Libro/edit/<?= $libro->id ?>">Editar</a>
                     <?php if(!$libro->ejemplares){ ?>
-                    <a href="/Libro/delete/<?= $libro->id ?>">Borrar</a>
+                    <a class="button" href="/Libro/delete/<?= $libro->id ?>">Borrar</a>
                     <?php } ?>
                 </td>
             </tr>

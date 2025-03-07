@@ -1,0 +1,20 @@
+PRUEBA MÓDULO 2 (viernes 14)
+
+base de datos (PROGRAMACIÓN NO) ni normalización
+
+que es un trigger/procedimiento
+
+
+PHP: todo salvo (cosas marcadas como avanzadas: traits, recursividad, métodos mágicos y herencia) EL MVC NO (es del tercer módulo)
+
+
+________________________________________________________________________________
+
+PRUEBA MÓDULO 3 (miércoles 19)
+
+Implantación: salvo los conceptos avanzados de GIT ni cosas por consola
+MVC
+
+________________________________________________________________________________
+
+Proyecto final (viernes 21)

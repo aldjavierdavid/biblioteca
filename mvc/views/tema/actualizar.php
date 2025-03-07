@@ -9,16 +9,17 @@
 
 <body>
     <?= $template->login() ?>
-    <?= $template->header('Lista de libros') ?>
+    <?= $template->header('Editar tema') ?>
     <?= $template->menu() ?>
     <?= $template->breadCrumbs([
-        'Socios' => null
+        'Temas' => null
     ]) ?>
     <?= $template->messages() ?>
     <main>
 
-        <form method="POST" enctype="multipart/form-data" action="/Socio/update">
+        <form method="POST" enctype="multipart/form-data" action="/Tema/update">
             <h2>Editar tema: <?= $tema->tema ?></h2>
+            <input type="hidden" name='id' value="<?= $tema->id ?>">
             <label>Nombre del tema:</label>
             <input type="text" value="<?= $tema->tema ?>" name="tema">
             <br>

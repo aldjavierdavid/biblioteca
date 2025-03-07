@@ -66,7 +66,6 @@ class TemaController extends Controller
 
     public function show(int $id = 0)
     {
-
         // comprueba que llega el ID
         if (!$id)
             throw new NothingToFindException('No se indicó el libro a buscar');
@@ -76,9 +75,11 @@ class TemaController extends Controller
         // comprueba que existe ese libro 
         $tema = Tema::findOrFail($id, "No se encontró el libro indicado.");
 
+        $libros = $tema->belongsToMany('Libro', 'temas_libros');
         // carga la vista y le pasa el libro recuperado
         return view('tema/detalles', [
-            'tema' => $tema
+            'tema' => $tema,
+            'libros' => $libros
         ]);
     }
 
@@ -129,6 +130,41 @@ class TemaController extends Controller
 
             // regresa al formulario de creación de libro 
             return redirect("/Tema/actualizar/$id");
+        }
+    }
+
+    public function delete(int $id = 0)
+    {
+
+        $tema = Tema::findOrFail($id, "No existe el socio.");
+
+        return view('tema/borrar', [
+            'tema' => $tema
+        ]);
+    }
+
+    public function destroy()
+    {
+
+        //comprueba que llega el formulario de confirmación
+        if (!request()->has('borrar'))
+            throw new FormException('No se recibió la confirmación');
+
+        $id = intval(request()->post('id')); // recupera el identificador
+        $tema = Tema::findOrFail($id); // recupera el libro
+
+        try {
+            $tema->deleteObject();
+            Session::success("Se ha borrado el tema $tema->tema.");
+            return redirect("/Tema/list");
+        } catch (SQLException $e) {
+
+            Session::error("No se pudo borrar el socio $tema->tema.");
+
+            if (DEBUG)
+                throw new SQLException($e->getMessage());
+
+            return redirect("/Tema/delete/$id");
         }
     }
 

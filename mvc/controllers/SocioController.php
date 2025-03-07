@@ -27,10 +27,12 @@ class SocioController extends Controller
 
         // comprueba que existe ese libro 
         $socio = Socio::findOrFail($id, "No se encontró el libro indicado.");
+        $prestamos = $socio->hasMany('v_Prestamo');
 
         // carga la vista y le pasa el libro recuperado
         return view('socios/detalles', [
-            'socio' => $socio
+            'socio' => $socio,
+            'prestamos' => $prestamos
         ]);
     }
 

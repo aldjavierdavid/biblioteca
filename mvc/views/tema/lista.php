@@ -28,11 +28,12 @@
                 <tr>
                     <td><?= $tema->tema ?></td>
                     <td><?= $tema->descripcion ?></td>
-                    <td>
-                      <a href="/Tema/show/<?= $tema->id ?>">Ver detalles</a>
-                      <a href="/Tema/edit/<?= $tema->id ?>">Editar tema</a>
-                      <a href="/Tema/delete/<?= $tema->id ?>">Borrar tema</a>
-                        
+                    <td class="centrado">
+                      <a class="button" href="/Tema/show/<?= $tema->id ?>">Ver detalles</a>
+                      <a class="button" href="/Tema/edit/<?= $tema->id ?>">Editar tema</a>
+                      <?php if(!$tema->ejemplares){ ?>
+                      <a class="button" href="/Tema/delete/<?= $tema->id ?>">Borrar tema</a>
+                      <?php } ?>
                     </td>
                 </tr>
             <?php } ?>

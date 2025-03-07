@@ -26,9 +26,9 @@
             </form>
 
             <div class="centered">
-                <a class="button" onclick="history.back()">Atrás</a>
-                <a class="button" href="/Socio/lista">Lista de libros</a>
+            <a class="button" onclick="history.back()">Atrás</a>
+                <a class="button" href="/Socio/list">Lista de socios</a>
+                <a class="button" href="/Socio/edit/<?= $socio->id ?>">Editar</a>
                 <a class="button" href="/Socio/show/<?= $socio->id ?>">Detalles</a>
-                <a class="button" href="/Socio/edit/<?= $socio->id ?>">Edición</a>
             </div>
         </main>
