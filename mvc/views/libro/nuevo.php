@@ -40,6 +40,7 @@
                     <option value="Catalán" <?= oldSelected('idioma', 'Castellano') ?>>Catalán</option>
                     <option value="Otros" <?= oldSelected('idioma', 'Castellano') ?>>Otros</option>
                 </select>
+                <br>
                 <label>Edición</label>
                 <input type="number" min="0" name="edicion" value="<?= old('edicion') ?>">
                 <br>
@@ -58,6 +59,14 @@
                 <br>
                 <label>Sinopsis</label>
                 <textarea name="sinopsis" class="w50"><?= old('sinopsis') ?></textarea> 
+                <br>
+                <label>Tema</label>
+                <select name="idtema">
+                    <?php
+                         foreach($listaTemas as $nuevoTema)
+                            echo"<option value='$nuevoTema->id'>$nuevoTema->tema</option>";
+                    ?>
+                </select>
                 <br>
                 <div class="centered mt2">
                     <input type="submit" class="button" name="guardar" value="Guardar">

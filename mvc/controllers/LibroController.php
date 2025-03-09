@@ -55,7 +55,11 @@ class LibroController extends Controller
 
     public function create()
     {
-        return view('libro/nuevo');
+        //carga la vista con el forumulario y le pasa
+        // la lista de temas ordenados alfabeticamente
+        return view('libro/nuevo', [
+            'listaTemas' => Tema::orderBy('tema')
+        ]);
     }
 
     public function store()
@@ -79,6 +83,9 @@ class LibroController extends Controller
         $libro->caracteristicas = request()->post('caracteristicas');
         $libro->sinopsis        = request()->post('sinopsis');
 
+        //recupera el idtema del desplegable
+        $idtema = intval(request()->post('idtema'));
+
         // Como en la configuración hemos indicado EMPTY_STRINGS_TO_NULL a true
         // los datos en blancos serán tomados como NULL.
         // En la BDD deberíamos permitir valores nulos en esos campos.
@@ -91,6 +98,7 @@ class LibroController extends Controller
         try {
             // guarda el libro en la base de datos
             $libro->save();
+            $libro->addTema($idtema); // le pone el tema principal
 
             // flashea un mensaje éxito en sesión
             Session::success("Guardado del libro $libro->titulo correcto.");
@@ -133,7 +141,7 @@ class LibroController extends Controller
 
         $temas = $libro->belongsToMany('Tema', 'temas_libros');
 
-        $listaTemas = Tema::orderBy('tema');
+        $listaTemas = array_diff(Tema::orderBy('tema'), $temas);
 
         // retorna una ViewResponse con la vista con el formulario de edición
         return view('libro/actualizar', [
@@ -241,6 +249,82 @@ class LibroController extends Controller
                 throw new SQLException($e->getMessage());
 
             return redirect("/Libro/delete/$id");
+        }
+    }
+
+    /**
+     * Añade un tema a un libro
+     * 
+     * @return RedirectResponse
+     */
+    public function addtema(){
+        if(empty(request()->post('add')))
+            throw new FormException("No se recibio el formulario");
+
+        // recupera los identificadores necesarios (idlibro e idtema)
+        $idlibro = intval(request()->post('idlibro'));
+        $idtema = intval(request()->post('idtema'));
+
+        // recupera el libro
+        $libro = Libro::findOrFail($idlibro, "No se encontro el libro");
+
+        // recuperar el tema es opcional, si fallara la operacion porque el tema
+        // ya no existe, el mensaje de error seria mas claro para el usuario
+        $tema = Tema::findOrFail($idtema, "No se encontro el tema");
+
+        try{
+            $libro->addTema($idtema);
+
+            Session::success("Se ha añadido $tema->tema a $libro->titulo.");
+            return redirect("/Libro/edit/$idlibro");
+
+        }catch(SQLException $e){
+
+            Session::error("No se pudo añadir $tema->tema a $libro->titulo.");
+
+            if(DEBUG)
+                throw new SQLException($e->getMessage());
+
+            return redirect("/Libro/edit/$idlibro");
+        }
+    }
+
+    /**
+     * Elimina un tema de un libro
+     * 
+     * @return RedirectResponse
+     */
+    public function removetema(){
+        
+        // comprueba que llega el formulario
+        if(empty(request()->post('remove')))
+            throw new FormException("No se recibio el formulario.");
+
+        // toma los IDs necesarios (idlibro e idtema)
+        $idlibro = intval(request()->post('idlibro'));
+        $idtema = intval(request()->post('idtema'));
+
+        // recupera el libro
+        $libro = Libro::findOrFail($idlibro, "No se encontro el libro");
+
+        //recuperar el tema es opcional, si fallara la operacion porque el tema
+        // ya no existe, el mensaje de error seria mas claro para el usuario
+        $tema = Tema::findOrFail($idtema, "No se encontro el tema");
+
+        //intenta quitar el tema al libro
+        try{
+            $libro->removeTema($idtema);
+            Session::success("Se ha eliminado $tema->tema de $libro->titulo.");
+            return redirect("/Libro/edit/$idlibro");
+
+        // si se produce un error...
+        }catch(SQLException $e){
+            Session::error("No se pudo eliminar $tema->tema de $libro->titulo.");
+
+            if(DEBUG)
+                throw new SQLException($e->getMessage());
+
+            return redirect("/Libro/edit/$idlibro");
         }
     }
 }
