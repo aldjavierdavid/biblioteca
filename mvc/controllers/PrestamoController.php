@@ -11,14 +11,31 @@ class PrestamoController extends Controller
      * Listado de libros
      * @return ViewResponse
      */
-    public function list()
+    public function list(int $page = 1)
     {
-        // recupera los libros junto con la información extra
-        $prestamos = V_prestamo::orderBy('id');
+        $filtro = Filter::apply('prestamos');
+        $limit = RESULTS_PER_PAGE;
+        
+        if($filtro){
 
+        $total = V_prestamo::filteredResults($filtro);
+        
+        $paginator = new Paginator('/Prestamo/list', $page, $limit, $total);
+
+        $prestamos = V_prestamo::filter($filtro, $limit, $paginator->getOffset());
+        
+    }else{
+        $total = Prestamo::total();
+
+        $paginator = new Paginator('/Prestamo/list', $page, $limit, $total);
+
+        $prestamos = V_prestamo::orderBy('id', 'ASC', $limit, $paginator->getOffset());
+    }
         // carga la vista que los muestra
         return view('prestamo/lista', [
-            'prestamos' => $prestamos
+            'prestamos' => $prestamos,
+            'paginator' => $paginator,
+            'filtro' => $filtro
         ]);
     }
 

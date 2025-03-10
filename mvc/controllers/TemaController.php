@@ -11,13 +11,31 @@ class TemaController extends Controller
      * @return ViewResponse
      */
 
-    public function list()
+    public function list(int $page = 1)
     {
-        $temas = Tema::all();
-        $temas = Tema::orderBy('id');
+        
+        $filtro = Filter::apply('temas');
+        $limit = RESULTS_PER_PAGE;
+        
+        if($filtro){
+
+        $total = Tema::filteredResults($filtro);
+
+        $paginator = new Paginator('/Tema/list', $page, $limit, $total);
+
+        $temas = Tema::filter($filtro, $limit, $paginator->getOffset());
+    }else{
+        $total = Tema::total();
+
+        $paginator = new Paginator('Tema/list', $page, $limit, $total);
+
+        $temas = Tema::orderBy('tema', 'ASC', $limit, $paginator->getOffset());
+    }
 
         return view('tema/lista', [
-            'temas' => $temas
+            'temas' => $temas,
+            'paginator' => $paginator,
+            'filtro' => $filtro
         ]);
     }
 

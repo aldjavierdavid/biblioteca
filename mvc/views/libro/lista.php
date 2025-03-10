@@ -26,9 +26,48 @@
         <h1><?= APP_NAME ?></h1>
         <h2>Lista completa de libros</h2>
 
+        <!-- FILTRO DE BUSQUEDA --> 
+        <?php 
+
+        // si hay filtro guardado en sesion...
+        if($filtro){
+
+            // pone el formulario de quitar filtro
+            // el metodo removeFilterForm necesita conocer el filtro
+            // y la ruta a la que se envia el formulario
+            echo $template->removeFilterForm($filtro, '/Libro/list');
+        }else{
+            // pone el formulario de nuevo filtro
+            echo $template->filterForm(
+
+                // lista de campos para el desplegable "buscar en"
+                [
+                    'Titulo' => 'titulo',
+                    'Editorial' => 'editorial',
+                    'Autor' => 'autor', 
+                    'ISBN' => 'isbn'
+                ],
+                // lista de campos para el desplegable "ordenado por"
+                [
+                    'Titulo' => 'titulo',
+                    'Editorial' => 'editorial',
+                    'Autor' => 'autor', 
+                    'ISBN' => 'isbn'
+                ],
+                // valor por defecto para buscar en
+                'Titulo',
+                // valor por defecto para "ordenado por"
+                'Titulo'
+            );
+        } ?>
+
         <?php if($libros) { ?>
+            <div class="right">
+                <?= $paginator->stats() ?>
+            </div>
             <table class="table w100">
                 <tr>
+                    <th>Portada</th>
                     <th>ISBN</th>
                     <th>Título</th>
                     <th>Autor</th>
@@ -38,8 +77,15 @@
             
         <?php foreach($libros as $libro){ ?>
             <tr>
+                <td class='centrado'>
+                <a href="/Libro/show/<?= $libro->id ?>">
+                    <img class="table-image" src="<?=BOOK_IMAGE_FOLDER.'/'.($libro->portada ?? DEFAULT_BOOK_IMAGE)?>" alt="Portada de <?= $libro->titulo ?>"
+                    title="Portada de <?= $libro->titulo ?>">
+                </a>
+
+                </td>
                 <td><?= $libro->isbn ?></td>
-                <td><a href="/Libro/show/<?= $libro->id ?>"><?=$libro->titulo?></a></td>
+                <td><?=$libro->titulo?></a></td>
                 <td><?=$libro->autor?></td>
                 <td><?=$libro->ejemplares?></td>
                 <td class="centrado">
@@ -52,6 +98,7 @@
             </tr>
         <?php } ?>
         </table>
+        <?= $paginator->ellipsisLinks() ?>
         <?php }else{ ?>
             <div class="danger p2">
                 <p>No hay libros que mostrar.</p>

@@ -68,7 +68,7 @@ define('DEFAULT_CONTROLLER', 'WelcomeController');
 define('DEFAULT_METHOD', 'index');
    
 // Email del administrador, para la operación de "contacto"
-define('ADMIN_EMAIL', 'skapakaunto6@gmail.com');
+define('ADMIN_EMAIL', 'gohal56828@dwriters.com');
 
 // ¿Deben las cadenas vacías ser convertidas a NULL? 
 // se aplica al recuperar los datos de la petición mediante el objeto Request,
@@ -194,6 +194,12 @@ define('RESULTS_PER_PAGE', 10);  // Número de resultados por página
 define('UPLOAD_FOLDER', '../storage'); // carpeta por defecto para las subidas de ficheros
 define('UPLOAD_MAX_SIZE', 0);          // tamaño máximo para las subidas, en bytes (0 sin límite)
 
+// carpeta para las imagenes de las portadas de los libros
+define('BOOK_IMAGE_FOLDER','/images/books');
+
+// imagen por defecto para los libros que no tengan portada
+define('DEFAULT_BOOK_IMAGE', 'cover.jpg');
+
 
 
 /* -------------------------------------------------------------
@@ -292,5 +298,10 @@ define('ALLOW_CREDENTIALS', 'true');                 // ¿Se permite el envío d
 
 define('API_AUTHENTICATION', 'COOKIE'); // puede ser COOKIE (implementado) o KEY (no implementado aún)
 
+/*-------------------------------------------- 
+* PAGINADOR
+*--------------------------------------------*/
+
+define('RESULTS_PER_PAGE', 10); //Numero de resultados por pagina
     
     

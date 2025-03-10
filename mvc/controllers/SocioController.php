@@ -6,13 +6,31 @@ class SocioController extends Controller
         return $this->list();
     }
 
-    public function list(){
+    public function list(int $page = 1){
 
-        $socios = Socio::all();
-        $socios = Socio::orderBy('id');
+        $filtro = Filter::apply('socios');
+
+        $limit = RESULTS_PER_PAGE;
+
+        if($filtro){
+        
+        $total = Socio::filteredResults($filtro);
+
+        $paginator = new Paginator('/Socio/list', $page, $limit, $total);
+
+        $socios = Socio::filter($filtro, $limit, $paginator->getOffset());
+        }else{
+            $total = Socio::total();
+
+            $paginator = new Paginator('Socio/list', $page, $limit, $total);
+
+            $socios = Socio::orderBy('nombre', 'ASC', $limit, $paginator->getOffset());
+        }
 
         return view('socios/lista', [
-            'socios' => $socios
+            'socios' => $socios,
+            'paginator' => $paginator,
+            'filtro' => $filtro
         ]);
     }
 

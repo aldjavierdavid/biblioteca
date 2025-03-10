@@ -22,7 +22,7 @@
                 <p>Utiliza el formulario de contacto para enviar un mensaje
                    al administrador de <?= APP_NAME?>. </p>
 
-                <form method="POST" action="/Contacto/send">
+                <form method="POST" enctype="multipart/form-data" action="/Contacto/send">
                     <label>Email</label>
                     <input type="email" name="email" require value="<?= old('email') ?>">
                     <br>

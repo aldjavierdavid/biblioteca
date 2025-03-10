@@ -17,7 +17,8 @@
     <?= $template->messages() ?>
     <main>
         <h1><?= APP_NAME ?> </h1>
-        <section>
+        <section id="detalles" class="flex-container gap2">
+            <div class="flex2">
             <h2><?= $libro->titulo ?></h2>
 
             <p><b>ISBN:</b> <?= $libro->isbn ?></p>
@@ -33,6 +34,13 @@
             <p><b>Año:</b><?= $libro->anyo ?? '--' ?></p>
             <p><b>Páginas:</b><?= $libro->paginas ?? '--' ?></p>
             <p><b>Características:</b><?= $libro->caracteristicas ?? '--' ?></p>
+            </div>
+            <figure class="flex1 centrado p2">
+                <img src="<?=BOOK_IMAGE_FOLDER.'/'.($libro->portada ?? DEFAULT_BOOK_IMAGE)?>" 
+                class="cover enlarge-image" 
+                alt="Portada del libro <?= $libro->titulo ?>">
+                <figcaption>Portada de <?= "$libro->titulo, de $libro->autor" ?></figcaption>
+            </figure>
         </section>
         <section>
             <h2>Sinopsis</h2>

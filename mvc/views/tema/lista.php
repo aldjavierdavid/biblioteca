@@ -18,6 +18,38 @@
     <main>
         <h1><?= APP_NAME ?></h1>
         <h2>Lista de temas</h2>
+        <?php 
+
+// si hay filtro guardado en sesion...
+if($filtro){
+
+    // pone el formulario de quitar filtro
+    // el metodo removeFilterForm necesita conocer el filtro
+    // y la ruta a la que se envia el formulario
+    echo $template->removeFilterForm($filtro, '/Tema/list');
+}else{
+    // pone el formulario de nuevo filtro
+    echo $template->filterForm(
+
+        // lista de campos para el desplegable "buscar en"
+        [
+            'Tema' => 'tema',
+            'Descripcion' => 'descripcion',
+        ],
+        // lista de campos para el desplegable "ordenado por"
+        [
+            'Tema' => 'tema',
+            'Descripcion' => 'descripcion',
+        ],
+        // valor por defecto para buscar en
+        'Tema',
+        // valor por defecto para "ordenado por"
+        'Tema'
+    );
+} ?>
+        <div class="right">
+                <?= $paginator->stats() ?>
+            </div>
         <table class="table w100">
             <tr>
                 <th>Tema</th>
@@ -38,6 +70,7 @@
                 </tr>
             <?php } ?>
         </table>
+        <?= $paginator->ellipsisLinks() ?>
 </body>
 
 </html>
