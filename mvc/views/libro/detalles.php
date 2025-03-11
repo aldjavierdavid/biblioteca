@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Detalles del libro</title>
     <?= $template->css() ?>
+    <script src="/js/BigPicture.js"></script>
 </head>
 
 <body>
@@ -35,7 +36,7 @@
             <p><b>Páginas:</b><?= $libro->paginas ?? '--' ?></p>
             <p><b>Características:</b><?= $libro->caracteristicas ?? '--' ?></p>
             </div>
-            <figure class="flex1 centrado p2">
+            <figure id="" class="flex1 centrado p2">
                 <img src="<?=BOOK_IMAGE_FOLDER.'/'.($libro->portada ?? DEFAULT_BOOK_IMAGE)?>" 
                 class="cover enlarge-image" 
                 alt="Portada del libro <?= $libro->titulo ?>">

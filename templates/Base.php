@@ -101,7 +101,8 @@ class Base implements TemplateInterface{
                  $html .= "<span class='pc'> eres <a class='negrita' href='/Admin'>administrador</a>.</span>";
             
             // pone la imagen de perfil y el enlace a logout
-            $html .= "  <img class='xx-small middle my1' src='/images/users/".($user->picture ?? 'default.png')."' alt='Imagen de perfil'>
+            $html .= "  <img class='xx-small middle my1' 
+            src='".USER_IMAGE_FOLDER."/".".($user->picture ?? 'default.png')."' alt='Imagen de perfil'>
                         <a class='button' href='/Logout'>LogOut</a>
                      </div>";
 

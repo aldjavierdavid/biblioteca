@@ -144,7 +144,7 @@ define('ADMIN_ROLE', 'ROLE_ADMIN');
  * LOGIN
  * -------------------------------------------------------------*/
 
-define('REDIRECT_AFTER_LOGIN', '/');                // Redirección tras login.
+define('REDIRECT_AFTER_LOGIN', '/User/home');                // Redirección tras login.
 
 define('LOG_LOGIN_ERRORS', false);                 // Guardar errores de login en fichero de log.
 define('LOGIN_ERRORS_FILE', '../logs/login.log');  // Nombre del fichero para los errores de login.
@@ -177,16 +177,7 @@ define('VIEWS_FOLDER', '../mvc/views');     // Carpeta para las vistas.
 // Las opciones disponibles por defecto son Base, Dark, Neon o Retro.
 define('TEMPLATE', 'Neon');
 
-
-
-/* -------------------------------------------------------------
- * PAGINADOR
- * -------------------------------------------------------------*/
-
-define('RESULTS_PER_PAGE', 10);  // Número de resultados por página
-
-
-
+  // Número de resultados por página
 /* -------------------------------------------------------------
  * SUBIDA DE FICHEROS
  * -------------------------------------------------------------*/
@@ -303,5 +294,15 @@ define('API_AUTHENTICATION', 'COOKIE'); // puede ser COOKIE (implementado) o KEY
 *--------------------------------------------*/
 
 define('RESULTS_PER_PAGE', 10); //Numero de resultados por pagina
+
+/*------------------------------------------------------------------------------
+* LOGIN
+------------------------------------------------------------------------------*/
+
+// carpeta para las imágenes de los usuarios
+define('USER_IMAGE_FOLDER','/images/users');
+
+// imagen por defecto para los usuarios que no tengan
+define('DEFAULT_USER_IMAGE','default.png');
     
     

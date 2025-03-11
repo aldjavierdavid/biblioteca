@@ -20,7 +20,7 @@
         <h2>Nuevo libro</h2>
 
 
-        <form method="POST" enctype="multipart/form-data" action="/Libro/store">
+        <form method="POST" class="flex-container gap2" enctype="multipart/form-data" action="/Libro/store">
             <div class="flex2">
                 <label>ISBN</label>
                 <input type="text" name="isbn" value="<?= old('isbn') ?>">
@@ -33,6 +33,9 @@
                 <br>
                 <label>Autor</label>
                 <input type="text" name="autor" value="<?= old('autor') ?>">
+                <br>
+                <label>Portada</label>
+                <input type="file" name="portada" accept="image/*" id="file-with-preview">
                 <br>
                 <label>Idioma</label>
                 <select name="idioma">
@@ -73,9 +76,17 @@
                     <input type="reset" class="button" value="Reset">
                 </div>
             </div>
+
+            <figure class="flex1 centrado">
+                <img src="<?= BOOK_IMAGE_FOLDER.'/'.DEFAULT_BOOK_IMAGE?>"
+                class="cover" id="preview-image" alt="Previsualización de la portada">
+                <figcaption>Previsualización de la portada</figcaption>
+            </figure> 
         </form>    
     <div class="centrado my2">
         <a class="button" onclick="history.back()">Atrás</a>
         <a class="button" href="/Libro/list">Lista de libros</a>
     </div>
 </main>
+<script src="/public/js/BigPicture.js"></script>
+<script src="/public/js/Preview.js"></script>
