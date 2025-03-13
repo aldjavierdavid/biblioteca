@@ -3,9 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Detalles del socio</title>
-    <?= $template->css() ?>
+    <title>Detalles del Usuario</title>
     <script src="/js/BigPicture.js"></script>
+    <?= $template->css() ?>
 </head>
 
 <body>
@@ -13,43 +13,32 @@
     <?= $template->header('Lista de libros') ?>
     <?= $template->menu() ?>
     <?= $template->breadCrumbs([
-        'Socios' => null
+        'Usuarios' => $user->displayname 
     ]) ?>
     <?= $template->messages() ?>
     <main>
         <h1><?= APP_NAME ?> </h1>
-        <section>
-            <h2><?= $tema->tema ?></h2>
+        <section id="detalles" class="flex-container gap2">
+            <div class="flex2">
+            <h2><?= $user->displayname?></h2>
+            
+            <p><b>Nombre de usuario:</b> <?= $user->displayname ?></p>
+            <p><b>Correo electrónico:</b> <?= $user->email ?></p>
+            <p><b>Teléfono:</b> <?= $user->phone ?></p>
+            <p><b>Roles: <?= $user->roles ?></b></p>
+            
+            <figure id="" class="flex1 centrado p2">
+                <img src="<?=USER_IMAGE_FOLDER.'/'.($user->picture ?? DEFAULT_USER_IMAGE)?>" 
+                class="cover enlarge-image" 
+                alt="Foto de perfil del usuario: <?= $user->displayname ?>">
+                <figcaption>Foto de perfil del usuario: <?= $user->displayname ?></figcaption>
+            </figure>
 
-            <p><b>Nombre del tema:</b> <?= $tema->tema ?></p>
-            <p><b>Descripcion:</b> <?= $tema->descripcion ?></p>
-            <div class="centrado">
+            <div class="centered">
                 <a class="button" onclick="history.back()">Atrás</a>
-                <a class="button" href="/Tema/list/">Lista de temas</a>
-                <a class="button" href="/Tema/edit/<?= $tema->id ?>">Editar</a>
-                <a class="button" href="/Tema/delete/<?= $tema->id ?>">Borrar</a>
+                <a class="button" href="/User/list">Lista de socios</a>
+                <a class="button" href="/User/edit/<?= $user->id ?>">Editar</a>
+                <a class="button" href="/User/delete/<?= $user->id ?>">Borrar</a>
+            </div>
             </div>
         </section>
-        <section>
-        <h2>Libros que tratan este tema</h2>
-        <?php
-        if(!$libros){
-            echo "<div class='warning p2'><p>No se han encontrado libros con este tema.</p></div>";
-        }else{ ?>
-            <table class="table w100">
-                <tr>
-                    <th>Titulo</th>
-                    <th>Autor</th>
-                    <th>Editorial</th>
-                </tr>
-                <?php foreach($libros as $libro){ ?>
-                    <tr>
-                        <td><a href="/Libro/show/<?= $libro->id?>"><?= $libro->titulo ?></a></td>
-                        <td><?=$libro->autor?></td>
-                        <td><?=$libro->editorial ?></td>
-                    </tr>
-               <?php } ?>
-            </table>
-        <?php } ?>
-        </section>
-      

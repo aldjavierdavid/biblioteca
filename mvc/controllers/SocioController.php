@@ -8,6 +8,11 @@ class SocioController extends Controller
 
     public function list(int $page = 1){
 
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
+
         $filtro = Filter::apply('socios');
 
         $limit = RESULTS_PER_PAGE;
@@ -22,7 +27,7 @@ class SocioController extends Controller
         }else{
             $total = Socio::total();
 
-            $paginator = new Paginator('Socio/list', $page, $limit, $total);
+            $paginator = new Paginator('/Socio/list', $page, $limit, $total);
 
             $socios = Socio::orderBy('nombre', 'ASC', $limit, $paginator->getOffset());
         }
@@ -36,6 +41,10 @@ class SocioController extends Controller
 
     public function show(int $id = 0)
     {
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
 
         // comprueba que llega el ID
         if (!$id)
@@ -60,6 +69,10 @@ class SocioController extends Controller
 
     public function create()
     {
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
         return view('socios/nuevo');
     }
 
@@ -70,6 +83,11 @@ class SocioController extends Controller
             throw new FormException('No se recibió el formulario');
 
         $socio = new Socio(); // crea el nuevo Libro
+
+        if($errores = $socio->validate())
+        throw new ValidationException(
+                "<br>".arrayToString($errores, false, false, ".<br>")
+        );
 
         // toma los datos que llegan por POST
         $socio->nombre          = request()->post('nombre');
@@ -131,6 +149,11 @@ class SocioController extends Controller
     public function edit(int $id = 0)
     {
 
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
+
         // busca el libro con ese ID
         $socio = Socio::findOrFail($id, "No se encontró el libro");
 
@@ -142,6 +165,10 @@ class SocioController extends Controller
 
     public function update()
     {
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
         // comprueba que la petición venga del formulario
         if (!request()->has('actualizar'))
             throw new FormException('No se recibió el formulario');
@@ -149,6 +176,12 @@ class SocioController extends Controller
         $id = intval(request()->post('id')); // recuperar el id vía POST
 
         $socio = Socio::findOrFail($id, "No se ha encontrado el libro,");
+
+        if($errores = $socio->validate())
+        throw new ValidationException(
+                "<br>".arrayToString($errores, false, false, ".<br>")
+        );
+
 
         // recuperar el resto de campos
         $socio->nombre          = request()->post('nombre');
@@ -197,6 +230,11 @@ class SocioController extends Controller
     public function delete(int $id = 0)
     {
 
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
+
         $socio = Socio::findOrFail($id, "No existe el socio.");
 
         return view('socios/borrar', [
@@ -210,6 +248,10 @@ class SocioController extends Controller
      */
     public function destroy()
     {
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
 
         //comprueba que llega el formulario de confirmación
         if (!request()->has('borrar'))

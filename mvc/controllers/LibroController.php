@@ -74,6 +74,13 @@ class LibroController extends Controller
 
     public function create()
     {
+        
+        // esta opción evita el lanzamiento de la excepción
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
+
         //carga la vista con el forumulario y le pasa
         // la lista de temas ordenados alfabeticamente
         return view('libro/nuevo', [
@@ -83,6 +90,11 @@ class LibroController extends Controller
 
     public function store()
     {
+        if($errores = $libro->validate())
+        throw new ValidationException(
+                "<br>".arrayToString($errores, false, false, ".<br>")
+        );
+
         // comprueba que la petición venga del formulario
         if (!request()->has('guardar'))
             throw new FormException('No se recibió el formulario');
@@ -115,6 +127,16 @@ class LibroController extends Controller
         // intenta guardar el libro, en caso que la inserción falle vamos a 
         // evitar ir a la página de error y volver al formulario "nuevo libro"
         try {
+            // Antes de nada, validamos los campos.
+            // Si la lista de errores está vacía seguimos, pero si contiene algo
+            // lanzamos una excepción de validación con los errores del mensaje.
+            if($errores = $libro->validate())
+                throw new ValidationException(
+                        "<br>".arrayToString($errores, false, false, ".<br>")
+                );
+
+
+
             // guarda el libro en la base de datos
             $libro->save();
             $libro->addTema($idtema); // le pone el tema principal
@@ -177,6 +199,10 @@ class LibroController extends Controller
 
     public function edit(int $id = 0)
     {
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
 
         // busca el libro con ese ID
         $libro = Libro::findOrFail($id, "No se encontró el libro");
@@ -197,6 +223,11 @@ class LibroController extends Controller
 
     public function update()
     {
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
+        
         // comprueba que la petición venga del formulario
         if (!request()->has('actualizar'))
             throw new FormException('No se recibió el formulario');
@@ -204,6 +235,12 @@ class LibroController extends Controller
         $id = intval(request()->post('id')); // recuperar el id vía POST
 
         $libro = Libro::findOrFail($id, "No se ha encontrado el libro,");
+
+        if($errores = $libro->validate())
+        throw new ValidationException(
+                "<br>".arrayToString($errores, false, false, ".<br>")
+        );
+
 
         // recuperar el resto de campos
         $libro->isbn            = request()->post('isbn');
@@ -276,6 +313,10 @@ class LibroController extends Controller
 
     public function delete(int $id = 0)
     {
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
 
         $libro = Libro::findOrFail($id, "No existe el libro.");
 
@@ -290,6 +331,10 @@ class LibroController extends Controller
      */
     public function destroy()
     {
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
 
         //comprueba que llega el formulario de confirmación
         if (!request()->has('borrar'))
@@ -340,6 +385,10 @@ class LibroController extends Controller
      */
     public function addtema()
     {
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
         if (empty(request()->post('add')))
             throw new FormException("No se recibio el formulario");
 
@@ -377,6 +426,10 @@ class LibroController extends Controller
      */
     public function removetema()
     {
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
 
         // comprueba que llega el formulario
         if (empty(request()->post('remove')))
@@ -417,6 +470,10 @@ class LibroController extends Controller
     */
     public function dropcover(){
 
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
         // si no llega el formulario...
         if(!request()->has('borrar'))
             throw new FormException('Faltan datos para completar la operación');

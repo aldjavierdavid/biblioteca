@@ -4,6 +4,10 @@ class PrestamoController extends Controller
 {
     public function index()
     {
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
         return $this->list();
     }
 

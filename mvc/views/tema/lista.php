@@ -62,8 +62,10 @@ if($filtro){
                     <td><?= $tema->descripcion ?></td>
                     <td class="centrado">
                       <a class="button" href="/Tema/show/<?= $tema->id ?>">Ver detalles</a>
+                      <?php if(Login::oneRole(['ROLE_LIBRARIAN, ROLE_TEST', 'ROLE_ADMIN'])){ ?>
                       <a class="button" href="/Tema/edit/<?= $tema->id ?>">Editar tema</a>
-                      <?php if(!$tema->ejemplares){ ?>
+                      <?php } ?>
+                      <?php if(!$tema->ejemplares && Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){ ?>
                       <a class="button" href="/Tema/delete/<?= $tema->id ?>">Borrar tema</a>
                       <?php } ?>
                     </td>

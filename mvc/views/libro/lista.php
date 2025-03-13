@@ -90,10 +90,13 @@
                 <td><?=$libro->ejemplares?></td>
                 <td class="centrado">
                     <a class="button" href="/Libro/show/<?= $libro->id ?>">Ver</a>
+                    <?php if(Login::oneRole(['ROLE_LIBRARIAN, ROLE_TEST'])){ ?>
                     <a class="button" href="/Libro/edit/<?= $libro->id ?>">Editar</a>
+
                     <?php if(!$libro->ejemplares){ ?>
                     <a class="button" href="/Libro/delete/<?= $libro->id ?>">Borrar</a>
                     <?php } ?>
+                <?php } ?>
                 </td>
             </tr>
         <?php } ?>

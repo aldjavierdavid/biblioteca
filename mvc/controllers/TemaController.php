@@ -27,7 +27,7 @@ class TemaController extends Controller
     }else{
         $total = Tema::total();
 
-        $paginator = new Paginator('Tema/list', $page, $limit, $total);
+        $paginator = new Paginator('/Tema/list', $page, $limit, $total);
 
         $temas = Tema::orderBy('tema', 'ASC', $limit, $paginator->getOffset());
     }
@@ -41,11 +41,19 @@ class TemaController extends Controller
 
     public function create()
     {
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
         return view('tema/nuevo');
     }
 
     public function store()
     {
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
         if (!request()->has('guardar'))
             throw new FormException('No se recibió el formulario');
 
@@ -103,6 +111,10 @@ class TemaController extends Controller
 
     public function edit(int $id = 0)
     {
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
 
         // busca el libro con ese ID
         $tema = Tema::findOrFail($id, "No se encontró el libro");
@@ -115,6 +127,10 @@ class TemaController extends Controller
 
     public function update()
     {
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
         // comprueba que la petición venga del formulario
         if (!request()->has('actualizar'))
             throw new FormException('No se recibió el formulario');
@@ -153,6 +169,10 @@ class TemaController extends Controller
 
     public function delete(int $id = 0)
     {
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
 
         $tema = Tema::findOrFail($id, "No existe el socio.");
 
@@ -163,6 +183,10 @@ class TemaController extends Controller
 
     public function destroy()
     {
+        if(!Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){
+            Session::error("No puedes realizar esta operación");
+            return redirect('/');
+        }
 
         //comprueba que llega el formulario de confirmación
         if (!request()->has('borrar'))

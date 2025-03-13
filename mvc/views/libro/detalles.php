@@ -50,8 +50,12 @@
         <div class="centrado">
             <a class="button" onclick="history.back()">Atrás</a>
             <a class="button" href="/Libro/list">Lista de libros</a>
+            <?php if(Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){ ?>
             <a class="button" href="/Libro/edit/<?= $libro->id ?>">Editar</a>
+            <?php } ?>
+            <?php if(Login::oneRole(['ROLE_LIBRARIAN', 'ROLE_TEST', 'ROLE_ADMIN'])){ ?>
             <a class="button" href="/Libro/delete/<?= $libro->id ?>">Borrar</a>
+            <?php } ?>
         </div>
 <section>
     <h2>Ejemplres de <?= $libro->titulo ?></h2>
